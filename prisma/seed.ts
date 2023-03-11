@@ -45,6 +45,34 @@ async function main() {
       },
     ],
   });
+
+  await prisma.hotel.create({
+    data: {
+      name: "hotel_legal",
+      image: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+    }
+  });
+
+  await prisma.room.createMany({
+    data: [
+      {
+        name: "1",
+        capacity: 2,
+        hotelId: 5
+      },
+      {
+        name: "2",
+        capacity: 2,
+        hotelId: 5
+      },
+      {
+        name: "3",
+        capacity: 3,
+        hotelId: 5
+      }
+    ] 
+  })
+  
 }
 
 main()
