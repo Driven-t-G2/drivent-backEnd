@@ -23,7 +23,8 @@
     "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
     "dev:migration:generate": "npm run dev:load-envs prisma migrate dev",
     "dev:seed": "npm run dev:load-envs prisma db seed",
-    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts"
+    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
+    "ci:build": "npm ci && npm run lint && npm run test:coverage && npm run build"
   },
   "keywords": [
     "driven.t",
@@ -85,6 +86,7 @@
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "http-status": "^1.5.2",
+    "ioredis": "^5.3.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13"

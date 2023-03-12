@@ -46,33 +46,74 @@ async function main() {
     ],
   });
 
-  await prisma.hotel.create({
+   const hotel1 = await prisma.hotel.create({
     data: {
-      name: "hotel_legal",
-      image: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
-    }
+      name: 'Hotel Maravilhoso',
+      image: 'https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768',
+    },
+  });
+
+  const hotel2 = await prisma.hotel.create({
+    data: {
+      name: 'Hotel Fantástico',
+      image: 'https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768',
+    },
   });
 
   await prisma.room.createMany({
     data: [
       {
-        name: "1",
+        name: 'Quarto Luxo 1',
         capacity: 2,
-        hotelId: 5
+        hotelId: hotel1.id,
       },
       {
-        name: "2",
-        capacity: 2,
-        hotelId: 5
-      },
-      {
-        name: "3",
+        name: 'Quarto Luxo 2',
         capacity: 3,
-        hotelId: 5
-      }
-    ] 
-  })
-  
+        hotelId: hotel1.id,
+      },
+      {
+        name: 'Quarto Simples 1',
+        capacity: 1,
+        hotelId: hotel1.id,
+      },
+      {
+        name: 'Quarto Simples 2',
+        capacity: 2,
+        hotelId: hotel1.id,
+      },
+      {
+        name: 'Quarto Familiar 1',
+        capacity: 3,
+        hotelId: hotel1.id,
+      },
+      {
+        name: 'Quarto Luxo 1',
+        capacity: 2,
+        hotelId: hotel2.id,
+      },
+      {
+        name: 'Quarto Luxo 2',
+        capacity: 3,
+        hotelId: hotel2.id,
+      },
+      {
+        name: 'Quarto Simples 1',
+        capacity: 1,
+        hotelId: hotel2.id,
+      },
+      {
+        name: 'Quarto Simples 2',
+        capacity: 2,
+        hotelId: hotel2.id,
+      },
+      {
+        name: 'Quarto Familiar 1',
+        capacity: 3,
+        hotelId: hotel2.id,
+      },
+    ],
+  });
 }
 
 main()

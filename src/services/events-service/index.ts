@@ -1,17 +1,26 @@
-import { notFoundError } from "@/errors";
-import eventRepository from "@/repositories/event-repository";
-import { exclude } from "@/utils/prisma-utils";
-import { Event } from "@prisma/client";
-import dayjs from "dayjs";
+import { notFoundError } from '@/errors';
+import eventRepository from '@/repositories/event-repository';
+import { exclude } from '@/utils/prisma-utils';
+import { Event } from '@prisma/client';
+import dayjs from 'dayjs';
+import { redis } from '@/config';
 
-async function getFirstEvent(): Promise<GetFirstEventResult> {
+async function getFirstEventWithCache(): Promise<GetFirstEventResult> {
+  const cacheKey = 'firstEvent';
+
+  const cachedData = await redis.get(cacheKey);
+  if (cachedData) {
+    return JSON.parse(cachedData);
+  }
+
   const event = await eventRepository.findFirst();
   if (!event) throw notFoundError();
+  const result = exclude(event, 'createdAt', 'updatedAt');
 
-  return exclude(event, "createdAt", "updatedAt");
+  redis.set(cacheKey, JSON.stringify(result), 'EX', 600);
+
+  return result;
 }
-
-export type GetFirstEventResult = Omit<Event, "createdAt" | "updatedAt">;
 
 async function isCurrentEventActive(): Promise<boolean> {
   const event = await eventRepository.findFirst();
@@ -25,8 +34,9 @@ async function isCurrentEventActive(): Promise<boolean> {
 }
 
 const eventsService = {
-  getFirstEvent,
+  getFirstEvent: getFirstEventWithCache,
   isCurrentEventActive,
 };
 
+export type GetFirstEventResult = Omit<Event, 'createdAt' | 'updatedAt'>;
 export default eventsService;
