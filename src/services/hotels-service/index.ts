@@ -46,20 +46,12 @@ async function getHotels(userId: number) {
 }
 
 async function getHotelsWithRooms(userId: number, hotelId: number) {
-  const cacheKey = `getHotelsWithRooms:${userId}:${hotelId}`;
-  const cachedResult = await redis.get(cacheKey);
-  if (cachedResult) {
-    return JSON.parse(cachedResult);
-  }
-
   await listHotels(userId);
   const hotel = await hotelRepository.findRoomsByHotelId(hotelId);
 
   if (!hotel) {
     throw notFoundError();
   }
-
-  await redis.set(cacheKey, JSON.stringify(hotel), 'EX', 3600);
 
   return hotel;
 }
