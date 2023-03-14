@@ -160,6 +160,7 @@ model Activities {
   duration          Decimal
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
+  @@index([data_id])
   Chosen_Activities Chosen_Activities[]
 }
 
