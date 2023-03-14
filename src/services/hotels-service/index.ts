@@ -1,9 +1,9 @@
-import hotelRepository from '@/repositories/hotel-repository';
-import enrollmentRepository from '@/repositories/enrollment-repository';
-import ticketRepository from '@/repositories/ticket-repository';
-import { notFoundError } from '@/errors';
-import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
-import { redis } from '@/config';
+import hotelRepository from "@/repositories/hotel-repository";
+import enrollmentRepository from "@/repositories/enrollment-repository";
+import ticketRepository from "@/repositories/ticket-repository";
+import { notFoundError } from "@/errors";
+import { cannotListHotelsError } from "@/errors/cannot-list-hotels-error";
+import { redis } from "@/config";
 
 async function listHotels(userId: number) {
   const cacheKey = `listHotels:${userId}`;
@@ -19,13 +19,13 @@ async function listHotels(userId: number) {
 
   const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
 
-  if (!ticket || ticket.status === 'RESERVED' || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
+  if (!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
     throw cannotListHotelsError();
   }
 
-  const result = 'hotels found';
+  const result = "hotels found";
 
-  await redis.set(cacheKey, JSON.stringify(result), 'EX', 3600);
+  await redis.set(cacheKey, JSON.stringify(result), "EX", 3600);
 
   return result;
 }
@@ -40,7 +40,7 @@ async function getHotels(userId: number) {
   await listHotels(userId);
   const hotels = await hotelRepository.findHotels();
 
-  await redis.set(cacheKey, JSON.stringify(hotels), 'EX', 3600);
+  await redis.set(cacheKey, JSON.stringify(hotels), "EX", 3600);
 
   return hotels;
 }
@@ -59,7 +59,7 @@ async function getHotelsWithRooms(userId: number, hotelId: number) {
     throw notFoundError();
   }
 
-  await redis.set(cacheKey, JSON.stringify(hotel), 'EX', 3600);
+  await redis.set(cacheKey, JSON.stringify(hotel), "EX", 3600);
 
   return hotel;
 }

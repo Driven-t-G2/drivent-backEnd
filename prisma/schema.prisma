@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique @db.VarChar(255)
-  password   String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Session    Session[]
-  Enrollment Enrollment[]
-  Booking    Booking[]
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique @db.VarChar(255)
+  password          String              @db.VarChar(255)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  Session           Session[]
+  Enrollment        Enrollment[]
+  Booking           Booking[]
+  Chosen_Activities Chosen_Activities[]
 }
 
 model Session {
@@ -42,18 +43,17 @@ model Event {
 }
 
 model Enrollment {
-  id                Int                 @id @default(autoincrement())
-  name              String              @db.VarChar(255)
-  cpf               String              @db.VarChar(255)
-  birthday          DateTime
-  phone             String              @db.VarChar(255)
-  userId            Int                 @unique
-  User              User                @relation(fields: [userId], references: [id])
-  Address           Address[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  Ticket            Ticket[]
-  Chosen_Activities Chosen_Activities[]
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  cpf       String    @db.VarChar(255)
+  birthday  DateTime
+  phone     String    @db.VarChar(255)
+  userId    Int       @unique
+  User      User      @relation(fields: [userId], references: [id])
+  Address   Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Ticket    Ticket[]
 }
 
 model Address {
@@ -158,17 +158,17 @@ model Activities {
   local             String
   capacity          Int
   duration          Decimal
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
   Chosen_Activities Chosen_Activities[]
 }
 
 model Chosen_Activities {
-  id            Int        @id @default(autoincrement())
-  Activities    Activities @relation(fields: [activity_id], references: [id])
-  activity_id   Int
-  Enrollment    Enrollment @relation(fields: [enrollment_id], references: [id])
-  enrollment_id Int
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id          Int        @id @default(autoincrement())
+  Activities  Activities @relation(fields: [activity_id], references: [id])
+  activity_id Int
+  User        User       @relation(fields: [user_id], references: [id])
+  user_id     Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
