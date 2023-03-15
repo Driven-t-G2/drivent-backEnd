@@ -1,10 +1,10 @@
-import { notFoundError } from '@/errors';
-import ticketRepository from '@/repositories/ticket-repository';
-import enrollmentRepository from '@/repositories/enrollment-repository';
-import { TicketStatus } from '@prisma/client';
-import { redis } from '@/config';
+import { notFoundError } from "@/errors";
+import ticketRepository from "@/repositories/ticket-repository";
+import enrollmentRepository from "@/repositories/enrollment-repository";
+import { TicketStatus } from "@prisma/client";
+import { redis } from "@/config";
 
-const TICKET_TYPES_CACHE_KEY = 'ticketTypes';
+const TICKET_TYPES_CACHE_KEY = "ticketTypes";
 
 async function getTicketTypes() {
   const cachedTicketTypes = await redis.get(TICKET_TYPES_CACHE_KEY);
