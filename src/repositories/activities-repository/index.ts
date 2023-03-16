@@ -24,6 +24,15 @@ async function insertChosenActivity(activityId: number, userId: number) {
   });
 }
 
+
+async function findById(activityId: number) {
+  return prisma.activities.findFirst({
+    where:{
+      id: activityId
+    }
+  }) ;
+}
+
 async function findChosenByUserId(userId: number) {
   return prisma.chosen_Activities.findMany({
     include: {
@@ -40,6 +49,7 @@ const activitiesRepository = {
   findData,
   insertChosenActivity,
   findChosenByUserId,
+  findById,
 };
 
 export default activitiesRepository;
