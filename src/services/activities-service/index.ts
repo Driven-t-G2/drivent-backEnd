@@ -37,8 +37,8 @@ async function postChosenActiv(activityId: number, userId: number) {
     }
   }
 }
-const VerifyHour = (start: Date, end: Date, selectedStart: Date, selectedEnd: Date) => {
-  if (start === selectedStart || end === selectedEnd) return true;
+export const VerifyHour = (start: Date, end: Date, selectedStart: Date, selectedEnd: Date) => {
+  if (start.getTime() === selectedStart.getTime() || end.getTime() === selectedEnd.getTime()) return true;
   if (selectedStart < end && selectedStart > start) return true;
   if (selectedEnd > start && selectedEnd < end) return true;
   return false;
