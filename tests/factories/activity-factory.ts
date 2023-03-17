@@ -1,4 +1,5 @@
 import faker from "@faker-js/faker";
+import { prisma } from "@/config";
 
 export function  createDate(){
     const date = faker.date.soon(0)
@@ -17,3 +18,10 @@ export function createDateAfter(date1:Date){
     const date = faker.date.soon(0,date1)
     return date;
 }
+export async function createDates() {
+    return prisma.dates.create({
+        data:{
+            data: faker.name.firstName()
+        }
+    })
+  }
