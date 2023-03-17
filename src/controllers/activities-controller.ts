@@ -21,6 +21,7 @@ export async function getActivities(req: AuthenticatedRequest, res: Response) {
 }
 
 export async function getDates(req: AuthenticatedRequest, res: Response) {
+  console.log("opa")
   try {
     const dates = await activitiesService.getDate();
     return res.status(httpStatus.OK).send(dates);

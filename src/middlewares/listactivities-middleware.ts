@@ -21,8 +21,9 @@ export async function listActivitiesMd(req: AuthenticatedRequest, res: Response,
     if (!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
       throw cannotListHotelsError();
     }
+    
+    req.userId = userId;
 
-    return next();
   } catch (error) {
     if (error.name === "NotFoundError") {
       return res.sendStatus(httpStatus.NOT_FOUND);
@@ -30,6 +31,6 @@ export async function listActivitiesMd(req: AuthenticatedRequest, res: Response,
     if (error.name === "cannotListHotelsError") {
       return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
     }
-    return res.sendStatus(httpStatus.BAD_REQUEST);
   }
+  next();
 }
