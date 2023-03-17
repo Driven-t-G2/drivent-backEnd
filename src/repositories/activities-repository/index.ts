@@ -1,4 +1,4 @@
-import { prisma } from "@/config";
+import { prisma } from '@/config';
 
 async function findByDataId(dataId: number) {
   return prisma.activities.findMany({
@@ -12,7 +12,7 @@ async function findByDataId(dataId: number) {
 }
 
 async function findData() {
-  return prisma.dates.findMany();
+  return prisma.dates.findMany({ orderBy: { data: 'asc' } });
 }
 
 async function insertChosenActivity(activityId: number, userId: number) {
@@ -24,13 +24,12 @@ async function insertChosenActivity(activityId: number, userId: number) {
   });
 }
 
-
 async function findById(activityId: number) {
   return prisma.activities.findFirst({
-    where:{
-      id: activityId
-    }
-  }) ;
+    where: {
+      id: activityId,
+    },
+  });
 }
 
 async function findChosenByUserId(userId: number) {
