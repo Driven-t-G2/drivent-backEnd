@@ -155,13 +155,21 @@ model Activities {
   data_id           Int
   start_time        DateTime
   end_time          DateTime
-  local             String
+  local             Local?              @relation(fields: [local_id], references: [id])
+  local_id          Int?
   capacity          Int
   duration          Decimal
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  @@index([data_id])
   Chosen_Activities Chosen_Activities[]
+
+  @@index([data_id])
+}
+
+model Local {
+  id         Int          @id @default(autoincrement())
+  name       String
+  activities Activities[]
 }
 
 model Chosen_Activities {
