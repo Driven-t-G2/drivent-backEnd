@@ -1,12 +1,29 @@
 import { prisma } from '@/config';
 
-async function findByDataId(dataId: number) {
-  return prisma.activities.findMany({
-    include: {
-      Chosen_Activities: true,
-    },
+async function findByDataId(dateId: number) {
+  return prisma.local.findMany({
     where: {
-      data_id: dataId,
+      activities: {
+        some: {
+          AND: [
+            {
+              Dates: {
+                id: dateId,
+              },
+            },
+            {
+              data_id: dateId,
+            },
+          ],
+        },
+      },
+    },
+    include: {
+      activities: {
+        where: {
+          data_id: dateId,
+        },
+      },
     },
   });
 }

@@ -1,6 +1,6 @@
-import { Activities } from ".prisma/client";
-import { conflictError } from "@/errors";
-import activitiesRepository from "@/repositories/activities-repository";
+import { Local } from '.prisma/client';
+import { conflictError } from '@/errors';
+import activitiesRepository from '@/repositories/activities-repository';
 
 async function getActivitiesByDataId(dataId: number): Promise<ActivitiesArray> {
   const activities = await activitiesRepository.findByDataId(dataId);
@@ -44,7 +44,7 @@ export const VerifyHour = (start: Date, end: Date, selectedStart: Date, selected
   return false;
 };
 
-type ActivitiesArray = Activities[];
+type ActivitiesArray = Local[];
 
 const activitiesService = {
   getActivitiesByDataId,
