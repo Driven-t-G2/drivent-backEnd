@@ -2,9 +2,14 @@ import { Local } from '.prisma/client';
 import { conflictError } from '@/errors';
 import activitiesRepository from '@/repositories/activities-repository';
 
-async function getActivitiesByDataId(dataId: number): Promise<ActivitiesArray> {
-  const activities = await activitiesRepository.findByDataId(dataId);
-  return activities;
+async function getActivitiesByDataId(dataId: number, userId: number): Promise<ActivitiesArray> {
+  const allActivities = await activitiesRepository.findByDataId(dataId, userId);
+  for (const activity of allActivities) {
+    activity.activities = activity.activities.map( (a) => ({
+      ...a, subscribed: a.Chosen_Activities.length > 0, Chosen_Activities: undefined
+    }))
+  }
+  return allActivities;
 }
 
 async function getDate() {
@@ -33,7 +38,7 @@ async function postChosenActiv(activityId: number, userId: number) {
       const chosen = await activitiesRepository.insertChosenActivity(activityId, userId);
       return chosen;
     } else {
-      throw conflictError("Activities hours Don't match");
+      throw conflictError();
     }
   }
 }
