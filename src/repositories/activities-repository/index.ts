@@ -21,11 +21,12 @@ async function findByDataId(dateId: number, userId: number) {
     include: {
       activities: {
         include: {
+          _count: true,
           Chosen_Activities: {
             where: {
-              user_id: userId
-            }
-          }
+              user_id: userId,
+            },
+          },
         },
         where: {
           data_id: dateId,
