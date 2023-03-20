@@ -114,6 +114,54 @@ async function main() {
       },
     ],
   });
+
+  const local1 = await prisma.local.create({
+    data: {
+      name: "auditorio1"
+    }
+  });
+
+  const local2 = await prisma.local.create({
+    data: {
+      name: "Auditorio Lateral"
+    }
+  });
+
+  const data1 = await prisma.dates.create({
+    data: {
+      data: "2023/03/20"
+    }
+  });
+
+  const data2 = await prisma.dates.create({
+    data: {
+      data: "2023/03/21"
+    }
+  });
+
+  const activit1 = await prisma.activities.create({
+    data: {
+      name: "atividade1",
+      data_id: data1.id,           
+      start_time: dayjs().toDate(),
+      end_time: dayjs().add(2, 'hours').toDate(),        
+      local_id: local1.id,
+      capacity: 20,
+      duration: 2
+    }
+  })
+
+  await prisma.activities.create({
+    data: {
+      name: "atividade2",
+      data_id: data1.id,           
+      start_time: activit1.start_time,
+      end_time: activit1.end_time,        
+      local_id: local2.id,
+      capacity: 20,
+      duration: 2
+    }
+  })
 }
 
 main()

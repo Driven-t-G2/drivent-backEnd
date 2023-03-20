@@ -5,9 +5,10 @@ import activitiesService from "@/services/activities-service";
 
 export async function getActivities(req: AuthenticatedRequest, res: Response) {
   const { dataId } = req.params;
+  const { userId } = req;
 
   try {
-    const activities = await activitiesService.getActivitiesByDataId(Number(dataId));
+    const activities = await activitiesService.getActivitiesByDataId(Number(dataId), Number(userId));
     return res.status(httpStatus.OK).send(activities);
   } catch (error) {
     if (error.name === "NotFoundError") {
@@ -21,7 +22,6 @@ export async function getActivities(req: AuthenticatedRequest, res: Response) {
 }
 
 export async function getDates(req: AuthenticatedRequest, res: Response) {
-  console.log("opa")
   try {
     const dates = await activitiesService.getDate();
     return res.status(httpStatus.OK).send(dates);
@@ -51,7 +51,7 @@ export async function postChosenActivity(req: AuthenticatedRequest, res: Respons
       return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
     }
     if (error.name === "ConflictError") {
-      return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+      return res.status(409).send(error);
     }
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
